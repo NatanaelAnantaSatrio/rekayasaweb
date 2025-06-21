@@ -9,45 +9,40 @@ class MatkulController extends Controller
 {
     public function index()
     {
-        return response()->json(Matkul::all());
+        return Matkul::all();
     }
 
     public function show($id)
     {
-        $data = Matkul::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        return response()->json($data);
+        return Matkul::findOrFail($id);
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $data = $request->validate([
+            'kode' => 'required|unique:matkuls,kode',
             'nama' => 'required',
-            'sks' => 'required',
+            'sks' => 'required|integer',
         ]);
-        $data = Matkul::create($request->all());
-        return response()->json($data, 201);
+        return Matkul::create($data);
     }
 
     public function update(Request $request, $id)
     {
-        $data = Matkul::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        $data->update($request->all());
-        return response()->json($data);
+        $matkul = Matkul::findOrFail($id);
+        $data = $request->validate([
+            'kode' => 'sometimes|required|unique:matkuls,kode,'.$id,
+            'nama' => 'sometimes|required',
+            'sks' => 'sometimes|required|integer',
+        ]);
+        $matkul->update($data);
+        return $matkul;
     }
 
     public function destroy($id)
     {
-        $data = Matkul::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        $data->delete();
-        return response()->json(['message' => 'Deleted']);
+        $matkul = Matkul::findOrFail($id);
+        $matkul->delete();
+        return response()->json(['message' => 'Matkul deleted']);
     }
 }

@@ -6,12 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Dosen extends Model
 {
-    protected $table = 'dosen';
-    protected $primaryKey = 'id_dosen';
-    public $incrementing = true;
-    public $timestamps = false;
-
-    protected $fillable = [
-        'nama', 'fakultas', 'matkul'
-    ];
+    protected $fillable = ['nama', 'nidn', 'email', 'prodi'];
 }

@@ -9,46 +9,42 @@ class DosenController extends Controller
 {
     public function index()
     {
-        return response()->json(Dosen::all());
+        return Dosen::all();
     }
 
     public function show($id)
     {
-        $data = Dosen::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        return response()->json($data);
+        return Dosen::findOrFail($id);
     }
 
     public function store(Request $request)
     {
-        $this->validate($request, [
+        $data = $request->validate([
             'nama' => 'required',
-            'fakultas' => 'required',
-            'matkul' => 'required',
+            'nidn' => 'required|unique:dosens,nidn',
+            'email' => 'required|email|unique:dosens,email',
+            'prodi' => 'required',
         ]);
-        $data = Dosen::create($request->all());
-        return response()->json($data, 201);
+        return Dosen::create($data);
     }
 
     public function update(Request $request, $id)
     {
-        $data = Dosen::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        $data->update($request->all());
-        return response()->json($data);
+        $dosen = Dosen::findOrFail($id);
+        $data = $request->validate([
+            'nama' => 'sometimes|required',
+            'nidn' => 'sometimes|required|unique:dosens,nidn,'.$id,
+            'email' => 'sometimes|required|email|unique:dosens,email,'.$id,
+            'prodi' => 'sometimes|required',
+        ]);
+        $dosen->update($data);
+        return $dosen;
     }
 
     public function destroy($id)
     {
-        $data = Dosen::find($id);
-        if (!$data) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
-        $data->delete();
-        return response()->json(['message' => 'Deleted']);
+        $dosen = Dosen::findOrFail($id);
+        $dosen->delete();
+        return response()->json(['message' => 'Dosen deleted']);
     }
 }

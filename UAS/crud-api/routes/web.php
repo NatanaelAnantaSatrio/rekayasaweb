@@ -16,23 +16,23 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
-// Mahasiswa
-$router->get('/mahasiswa', 'MahasiswaController@index');
-$router->get('/mahasiswa/{id}', 'MahasiswaController@show');
-$router->post('/mahasiswa', 'MahasiswaController@store');
-$router->put('/mahasiswa/{id}', 'MahasiswaController@update');
-$router->delete('/mahasiswa/{id}', 'MahasiswaController@destroy');
+$router->get('/mahasiswas', 'MahasiswaController@index');
+$router->get('/mahasiswas/{id}', 'MahasiswaController@show');
+$router->post('/mahasiswas', 'MahasiswaController@store');
+$router->put('/mahasiswas/{id}', 'MahasiswaController@update');
+$router->delete('/mahasiswas/{id}', 'MahasiswaController@destroy');
 
-// Dosen
-$router->get('/dosen', 'DosenController@index');
-$router->get('/dosen/{id}', 'DosenController@show');
-$router->post('/dosen', 'DosenController@store');
-$router->put('/dosen/{id}', 'DosenController@update');
-$router->delete('/dosen/{id}', 'DosenController@destroy');
+$router->get('/dosens', 'DosenController@index');
+$router->get('/dosens/{id}', 'DosenController@show');
+$router->post('/dosens', 'DosenController@store');
+$router->put('/dosens/{id}', 'DosenController@update');
+$router->delete('/dosens/{id}', 'DosenController@destroy');
 
-// Matkul
-$router->get('/matkul', 'MatkulController@index');
-$router->get('/matkul/{id}', 'MatkulController@show');
-$router->post('/matkul', 'MatkulController@store');
-$router->put('/matkul/{id}', 'MatkulController@update');
-$router->delete('/matkul/{id}', 'MatkulController@destroy');
+$router->get('/matkuls', 'MatkulController@index');
+$router->get('/matkuls/{id}', 'MatkulController@show');
+$router->post('/matkuls', 'MatkulController@store');
+$router->put('/matkuls/{id}', 'MatkulController@update');
+$router->delete('/matkuls/{id}', 'MatkulController@destroy');
+
+$router->get('/users', 'UserController@index');
+$router->get('/users/{id}', 'UserController@show');

@@ -16,6 +16,37 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->post('/api/login', 'AuthController@login');
+$router->group(['middleware' => 'auth:api'], function () use ($router) {
+    $router->get('/api/user-profile', function () {
+        return response()->json(auth()->user());
+    });
+});
+
+$router->group(['middleware' => 'auth:api'], function () use ($router) {
+    // Dosen
+    $router->get('/api/dosen', 'DosenController@index');
+    $router->post('/api/dosen', 'DosenController@store');
+    $router->get('/api/dosen/{id}', 'DosenController@show');
+    $router->put('/api/dosen/{id}', 'DosenController@update');
+    $router->delete('/api/dosen/{id}', 'DosenController@destroy');
+
+    // Mahasiswa
+    $router->get('/api/mahasiswa', 'MahasiswaController@index');
+    $router->post('/api/mahasiswa', 'MahasiswaController@store');
+    $router->get('/api/mahasiswa/{id}', 'MahasiswaController@show');
+    $router->put('/api/mahasiswa/{id}', 'MahasiswaController@update');
+    $router->delete('/api/mahasiswa/{id}', 'MahasiswaController@destroy');
+
+    // Matkul
+    $router->get('/api/matkul', 'MatkulController@index');
+    $router->post('/api/matkul', 'MatkulController@store');
+    $router->get('/api/matkul/{id}', 'MatkulController@show');
+    $router->put('/api/matkul/{id}', 'MatkulController@update');
+    $router->delete('/api/matkul/{id}', 'MatkulController@destroy');
+});
+
 $router->get('/mahasiswas', 'MahasiswaController@index');
 $router->get('/mahasiswas/{id}', 'MahasiswaController@show');
 $router->post('/mahasiswas', 'MahasiswaController@store');
@@ -36,3 +67,10 @@ $router->delete('/matkuls/{id}', 'MatkulController@destroy');
 
 $router->get('/users', 'UserController@index');
 $router->get('/users/{id}', 'UserController@show');
+
+$router->group(['middleware' => 'jwt.auth'], function () use ($router) {
+    $router->get('/user', function () {
+        // Misal: ambil data user yang sedang login
+        return auth()->user();
+    });
+});

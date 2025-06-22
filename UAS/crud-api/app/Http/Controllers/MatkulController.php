@@ -2,47 +2,52 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Matkul;
 use Illuminate\Http\Request;
+use App\Models\Matkul;
 
 class MatkulController extends Controller
 {
     public function index()
     {
-        return Matkul::all();
+        return response()->json(Matkul::all());
     }
 
     public function show($id)
     {
-        return Matkul::findOrFail($id);
+        $matkul = Matkul::findOrFail($id);
+        return response()->json($matkul);
     }
 
     public function store(Request $request)
     {
-        $data = $request->validate([
+        $this->validate($request, [
             'kode' => 'required|unique:matkuls,kode',
             'nama' => 'required',
             'sks' => 'required|integer',
         ]);
-        return Matkul::create($data);
+
+        $matkul = Matkul::create($request->all());
+        return response()->json($matkul, 201);
     }
 
     public function update(Request $request, $id)
     {
         $matkul = Matkul::findOrFail($id);
-        $data = $request->validate([
+
+        $this->validate($request, [
             'kode' => 'sometimes|required|unique:matkuls,kode,'.$id,
             'nama' => 'sometimes|required',
             'sks' => 'sometimes|required|integer',
         ]);
-        $matkul->update($data);
-        return $matkul;
+
+        $matkul->update($request->all());
+        return response()->json($matkul);
     }
 
     public function destroy($id)
     {
         $matkul = Matkul::findOrFail($id);
         $matkul->delete();
-        return response()->json(['message' => 'Matkul deleted']);
+        return response()->json(['message' => 'Matkul deleted successfully']);
     }
 }

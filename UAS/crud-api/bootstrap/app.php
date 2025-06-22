@@ -23,6 +23,7 @@ $app = new Laravel\Lumen\Application(
     dirname(__DIR__)
 );
 
+$app->register(Tymon\JWTAuth\Providers\LumenServiceProvider::class);
 // $app->withFacades();
 
 // $app->withEloquent();
@@ -60,6 +61,8 @@ $app->singleton(
 */
 
 $app->configure('app');
+$app->configure('jwt');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -76,9 +79,11 @@ $app->configure('app');
 //     App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+ $app->routeMiddleware([
+     'auth' => App\Http\Middleware\Authenticate::class,
+     'jwt.auth' => Tymon\JWTAuth\Http\Middleware\Authenticate::class,
+
+ ]);
 
 /*
 |--------------------------------------------------------------------------
